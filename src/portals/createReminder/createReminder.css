@@ -1,0 +1,144 @@
+.create-reminder-background{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,70%);
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+.reminder-wrapper{
+    width: 540px;
+    height: 540px;
+    background-color: white;
+    border-radius: 30px;
+    position: relative;
+}
+.reminder-wrapper-title{
+    font-weight: normal;
+    text-align: center;
+}
+.reminder-wrapper-title h1{
+    font-size: 25px;
+    margin: 15px 0px 0px 0px;
+}
+.date-picker-reminder{
+    background-color: red;
+}
+.reminder-text{
+    margin-top: 45px;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.reminder-text input{
+    border: 1px solid #c4c4c4;
+    border-radius: 30px;
+    height: 35px;
+    width: 315px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 17px;
+    text-align: center;
+}
+.reminder-text label{
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: normal;
+}
+
+.reminder-date{
+    margin-top: 45px;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.reminder-date input{
+    font-size: 45px;
+    height: 60px;
+    width: 305px;
+    border: none;
+    background-color: #f4f4f4;
+    text-align: center;
+    border-radius: 10px;
+}
+.reminder-date label{
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: normal;
+}
+
+.reminder-hours{
+    margin-top: 45px;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+/* .reminder-hours input{
+    font-size: 45px;
+    height: 60px;
+    width: 305px;
+    border: none;
+    background-color: #f4f4f4;
+    text-align: center;
+    border-radius: 10px;
+} */
+.reminder-hours label{
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: normal;
+}
+
+.reminder-footer{
+    background-color: #078798;
+    height: 75px;
+    width: 100%;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    position: absolute; 
+    bottom: 0px;
+}
+.reminder-footer button{
+    margin: 0px;
+}
+.reminder-save-button{
+    font-weight: normal;
+    font-size: 20px;
+    border-radius: 10px;
+    height: 40px;
+    width: 110px;
+    background-color: #0AAB07;
+    color: white;
+    border: none;
+    border: 0.5px solid white;
+    cursor: pointer;
+}
+.reminder-save-button:hover{
+    background-color: #0a9808;
+}
+.reminder-button-holder{
+    width: 330px;
+    margin: auto;
+    margin-top: 18px;
+}
+.reminder-exit-button{
+    font-weight: normal;
+    font-size: 20px;
+    border-radius: 10px;
+    height: 40px;
+    width: 110px;
+    background-color: #C20404;
+    color: white;
+    border: none;
+    float: right;
+    border: 0.5px solid white;
+    cursor: pointer;
+}
+.reminder-exit-button:hover{
+    background-color: #9f0505;
+}

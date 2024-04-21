@@ -1,0 +1,102 @@
+.signUpPage{
+    height: 860px;
+    width: 1131px; 
+    background-color: #0F5A64;
+    position: absolute;
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    border-radius: 41px;
+    box-shadow: 0 4px 23.7px 2px black;
+    display: flex;
+}
+.signUpAppNameArea{
+    background-color: #0F5A64;
+    width: 684px; 
+    flex: 0 0 auto; 
+    border-top-left-radius: 41px;
+    border-bottom-left-radius: 41px;
+    font-family: 'Inter', sans-serif;
+}
+.signUpNameSloganLogoHolder{
+    margin: auto;
+    width: 80%;
+    text-align: center;
+    margin-top: 120px;
+}
+.signUpAppName{
+    font-weight: 200;
+    color: white;
+    font-size: 45px;
+    margin: 250px 0px 0px 0px;
+}
+.signUpAppSlogan{
+    color: white;
+    font-weight: 200;
+    font-size: 20px;
+    margin-top: 26px;
+
+}
+.signUpAppLogo{
+    width: 200px;
+    height: 200px;
+    margin: 110px 0px 0px 0px;
+}
+.signUpInputArea{
+    flex: 1;
+    background-color: white;
+    border-top-right-radius: 41px;
+    border-bottom-right-radius: 41px;
+}
+.signUpInputArea-title{
+    text-align: center;
+}
+.signUpInputArea-title h1{
+    font-weight: 200;
+    margin: 60px 0px 0px 0px;
+}
+.signUpEmail-password-input{
+    margin: 82px 0px 0px 0px;
+    padding-left: 45px;
+}
+.signUpEmail-holder{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 7px;
+}
+.signUpEmail-label{
+    font-size: 15px;
+}
+.signUpEmail{
+    height: 40px;
+    width: 350px;
+    border-radius: 30px;
+    font-size: 20px;
+    border: 1px solid #C4C4C4;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.logiIn-link{
+    text-align: center;
+    margin-top: 23px;
+    font-style: italic;
+    font-size: 15px;
+}
+.sign-up-button{
+    text-align: center;
+    margin-top: 45px;
+}
+.button{
+    width: 200px;
+    height: 56px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 15px;
+    border: none;
+    background-color: #0F5A64;
+    color: white;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: #0e4e56;
+}

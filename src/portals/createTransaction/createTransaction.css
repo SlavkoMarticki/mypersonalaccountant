@@ -1,0 +1,164 @@
+.create-transaction-background{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,70%);
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+.transaction-wrapper{
+    background-color: white;
+    width: 820px;
+    height: 855px;
+    border-radius: 20px;
+    display: flex;
+}
+.logo-side{
+    background-color: #026D7C;
+    height: 100%;
+    width: 320px;
+    border-radius: 20px;
+    display: inline-block;
+}
+.logo-side-decoratin{
+    border-radius: 20px 100% 0% 100% / 54% 38% 62% 46%;
+    background-color: #0F5A64;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+.logo{
+    width: 140px;
+    height: 140px;
+}
+.transaction-data-side{
+    display: inline-block;
+    width: 500px;
+    height: 100%;
+    
+}
+.transaction-title{
+    text-align: center;
+    padding-top: 32px;
+    padding-bottom: 50px;
+}
+.transaction-title h1{
+    font-size: 30px;
+    font-weight: 400;
+}
+.transaction-input-holder{
+    width: 330px;
+    height: 525px;
+    margin: auto;
+}
+.transaction-date{
+    width: 330px;
+    margin: auto;
+}
+.label-date-picker{
+    font-size: 18px;
+}
+.date-picker{
+    height: 35px;
+    width: 330px;
+    border: 1px solid #C4C4C4;
+    border-radius: 30px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.label-transaction-reason{
+    font-size: 18px;
+}
+.transaction-reason-textare{
+    width: 330px;
+    height: 145px;
+    border: 1px solid #C4C4C4;
+    border-radius: 30px;
+    margin-top: 10px;
+    resize: none;
+    font-size: 18px;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+.label-transaction-status{
+    font-size: 18px;
+}
+.radio-button-holder{
+    width: 330px;
+    margin-top: 10px;
+}
+.income-input-holder{
+    border: 1px solid #C4C4C4;
+    border-bottom: none;
+    width: 100%;
+    height: 40px;
+    color: #0AAB07;
+    font-size: 20px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.expenditure-input-holder{
+    border: 1px solid #C4C4C4;
+    width: 100%;
+    height: 40px;
+    color: #C20404;
+    padding-left: 10px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.label-transaction-amount{
+    font-size: 18px;
+}
+.amount-input{
+    height: 35px;
+    width: 330px;
+    border: 1px solid #C4C4C4;
+    border-radius: 30px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding-left: 10px;
+    font-size: 16px;
+}
+.button-holder{
+    margin: auto;
+    margin-top: 80px;
+    width: 330px;
+    
+}
+.save-button{
+    width: 110px;
+    height: 40px;
+    color: white;
+    font-size: 20px;
+    background-color: #0AAB07;
+    border: none;
+    border-radius: 10px;
+    margin-right: auto;
+}
+.save-button:hover{
+    background-color: #0a9808;
+    cursor: pointer;
+}
+.exit-button{
+    width: 110px;
+    height: 40px;
+    color: white;
+    font-size: 20px;
+    background-color: #C20404;
+    border: none;
+    border-radius: 10px;
+    float: right;
+    margin-left: auto;
+}
+.exit-button:hover{
+    background-color: #9f0505;
+    cursor: pointer;
+}
