@@ -6,7 +6,7 @@ const dateFormat = (date) => {
     const year = date.getFullYear();
 
     
-    return `${day}-${month}-${year}`;
+    return `${day<10 ?  '0'+day :day}.${month<10 ?  '0'+month :month}.${year}`;
 }
 
 export default dateFormat;

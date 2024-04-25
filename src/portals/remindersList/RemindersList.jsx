@@ -1,59 +1,50 @@
 import React, { useEffect, useState } from "react";
 import "./remindersList.css";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
 import deleteButton from "../../assets/logo/deleteButton.png"
+import {deleteReminder,fetchReminders} from "../../firebase/reminders";
+
 
 
 const RemindersList = (comand) => {
 
     const {openReminderList, closeReminderList} = comand;
     const [remindersList, setRemindersList] = useState([]);
-    const documentId = localStorage.getItem('id');
+    const [render,setRender] = useState(false);
 
     
 
     useEffect(() => {
-        
-        
         const getData = async () => {
-            
-            const documentRef = doc(db, 'users', documentId);
-            const docSnap = await getDoc(documentRef);
 
-            if(docSnap.exists()){
-                setRemindersList(docSnap.data().reminders)
+            try {
+                const reminders = await fetchReminders();
+                setRemindersList (reminders);  
+            } catch (error) {
+                console.error("Error fetching reminders:", error);
             }
-        }
 
+          
+        };
+    
         getData();
-        
-    },[remindersList]);
+    
+      }, []); 
 
-    const deleteReminder = async (id) => {
+      console.log(remindersList);
+
+    const deleteReminderHandler = async (id) =>{
 
         try {
-            
-            const documentRef = doc(db, 'users', documentId);
-            const docSnap = await getDoc(documentRef);
-
-            if(docSnap.exists()){
-
-                const allReminders = docSnap.data();
-                const newReminderList = allReminders.reminders.filter(reminder => reminder.reminderId !== id)
-
-                await updateDoc(documentRef, {
-                    reminders: newReminderList
-                });
-
-            }
-
+            await deleteReminder(id);
+            const updatedReminders = await fetchReminders();
+            setRemindersList(updatedReminders);
         } catch (error) {
-            alert("Error");
+            console.error("Error deleting reminder:", error);
         }
 
-    }
 
+    }
+    
 
     if(!openReminderList) return null;
     return (
@@ -84,7 +75,7 @@ const RemindersList = (comand) => {
                                         <th className="reminder-time">{reminder.time}</th>
                                         <th >
                                             <button
-                                                onClick={() => {deleteReminder(reminder.reminderId)}}
+                                                onClick={() => {deleteReminderHandler(reminder.reminderId)}}
                                                 className="reminder-delete-button"
                                             > 
                                             <img   

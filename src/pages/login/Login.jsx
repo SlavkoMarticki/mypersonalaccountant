@@ -6,22 +6,16 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
+import { login } from "../../firebase";
 
 
 const Login = () => {
 
     const navigate = useNavigate();
 
-    const login = async (email, password)  => {
-        try {
-            const loggedUser = await signInWithEmailAndPassword(auth, email, password);
-            const uid = loggedUser.user.uid;
-            localStorage.setItem('id',uid);
-            
-            navigate("/home");
-        } catch (error) {
-            alert("User not found");
-        }
+    const loginHandler = async (email, password)  => {
+        await login(auth, email, password);
+        navigate('/home')
     }
 
     const handleFormInput = (data) => {
@@ -31,7 +25,7 @@ const Login = () => {
             alert('Error');
             return;
         }
-        login(email, password);
+        loginHandler(email, password);
         
     }
   

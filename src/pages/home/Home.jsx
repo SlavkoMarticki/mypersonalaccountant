@@ -2,17 +2,19 @@ import React,{useState, useEffect} from "react";
 import "./home.css";
 import deleteButton from "../../assets/logo/deleteButton.png";
 import whiteArrow from "../../assets/logo/white-arrow.svg";
+import book from "../../assets/logo/book.png";
+import gearWheel from "../../assets/logo/gearwheel.png";
 import { BoldedWord } from "../../components";
-import { auth, db } from "../../firebase/firebase";
+import { auth } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom"
-import { signOut, onAuthStateChanged} from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { 
     CreateTransaction, 
     CreateReminder,
     RemindersList
 } from "../../portals";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 import dateFormat from "../../utils/dateFormat";
+import {fetchTransactions, deleteTransaction} from "../../firebase/transactions";
 
 
 const Home = () => {
@@ -43,72 +45,30 @@ const Home = () => {
         }
         
     }
-    const toggleTransactionClosed = () => {
-        setRender(!render);
-    }
 
     useEffect(()=>{
+        
+
         const getData = async () => {
-          
-            onAuthStateChanged(auth,async (user) =>{
-                if(user){
-
-                    const loggedUser = user.uid;
-
-                    const documentRef = doc(db, "users", loggedUser)
-                    const docSnap = await getDoc(documentRef);
-                
-                    console.log(docSnap);
-                    if (docSnap.exists()) {
-                        setUserData(docSnap.data());
-                    
-                    } else {
-                        alert("Loading data error");
-                    }
-                }
-            })            
+    
+           try {
+             const result = await fetchTransactions();
+             setUserData(result);
+           } catch (error) {
+             console.error("Error fetching transactions:", error);
+             alert("Error while fetching data");
+           }
+         
         }
 
         getData();
     },[render]);
-    
+    console.log(userData);
 
-    const deleteTransaction = async (id) => {
-
-        const documentId = localStorage.getItem('id');
-
-        try {
-            const documentRef = doc(db, 'users', documentId);
-            const docSnapshot = await getDoc(documentRef);
-            let newBalance = 0;
-
-            if (docSnapshot.exists()) {
-        
-                const selectAllTransactions = docSnapshot.data();
-                const selectedTransaction = selectAllTransactions.transactions.filter(transaction => transaction.transactionId === id);
-                const removeTransaction = selectAllTransactions.transactions.filter(transaction => transaction.transactionId !== id);
-                 
-
-                if(selectedTransaction[0].status === 'Income'){
-                    newBalance = Number(docSnapshot.data().balance) - Number(selectedTransaction[0].amount)
-                }else{
-                    newBalance = Number(docSnapshot.data().balance) + Number(selectedTransaction[0].amount)
-                }
-    
-                await updateDoc(documentRef, {
-                    transactions: removeTransaction,
-                    balance: newBalance
-                });
-    
-                
-                toggleTransactionClosed();
-            } else {
-                alert("Document does not exist!");
-            }
-
-        } catch (error) {
-            alert("Error")
-        }
+    const deleteTransactionHandler = async (id) => {
+   
+        await deleteTransaction(id);
+        setRender(!render);
     }
 
     return(
@@ -125,7 +85,7 @@ const Home = () => {
                         <img 
                             src={whiteArrow} 
                             alt='Loading...'
-                            className="button-arrow"
+                            className="button-image"
                             
                         />
                         Add Transaction
@@ -135,17 +95,25 @@ const Home = () => {
                         <img 
                             src={whiteArrow} 
                             alt='Loading...'
-                            className="button-arrow"
+                            className="button-image"
                         />
                         Add a Reminder
                     </button>
                     <button className="option-button" onClick={()=>setIsOpenReminderList(true)}>
                         <img 
-                            src={whiteArrow} 
+                            src={book} 
                             alt='Loading...'
-                            className="button-arrow"
+                            className="button-image"
                         />
                         My Reminders
+                    </button>
+                    <button className="option-button" onClick={()=>setIsOpenReminderList(true)}>
+                        <img 
+                            src={gearWheel} 
+                            alt='Loading...'
+                            className="button-image"
+                        />
+                        Edit Profil
                     </button>
                 </div>
 
@@ -156,7 +124,7 @@ const Home = () => {
                 </div>
                 <div className="date-balance-bar">
                     <div className="date-side">
-                        <p>Date: {dateFormat(new Date())}</p>
+                        <p>Date: {dateFormat(new Date())} <button>May</button> </p>
                     </div>
                     <div className="balance-side">
                         <p>Balance: {<BoldedWord word={(userData.balance * exchangeRate).toFixed(2)}/> }
@@ -220,7 +188,7 @@ const Home = () => {
                                         <th>{(user.amount * exchangeRate).toFixed(2)} {currencyLogo}</th>
                                         <button 
                                             className="deleteButton" 
-                                            onClick={() => {deleteTransaction(user.transactionId)}}
+                                            onClick={() => {deleteTransactionHandler(user.transactionId)}}
                                         >                                            
                                             <img src={deleteButton} alt="Delete" />
                                         </button>
@@ -232,11 +200,11 @@ const Home = () => {
                 </div>
             </div>
        </div>
-       <RemindersList openReminderList = {isOpenReminderList} closeReminderList = {()=>setIsOpenReminderList(false)} />
+       {isOpenReminderList ? <RemindersList openReminderList = {isOpenReminderList} closeReminderList = {()=>setIsOpenReminderList(false)} /> :<></>}
        <CreateTransaction 
             openTransaction={isOpenTransaction} 
             closeTransaction={() => {
-                toggleTransactionClosed();
+                setRender(!render);
                 setIsOpenTransaction(false);
                 
             }}
