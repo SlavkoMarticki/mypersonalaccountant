@@ -4,10 +4,7 @@ import logo from "../../assets/logo/logo.png";
 import { BoldedWord } from "../../components";
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, setDoc, doc } from "firebase/firestore";
-import { auth, db } from "../../firebase/firebase";
-import signUpFormCheck from "../../utils/signUpFormCheck";
+import {signUp} from "../../firebase/auth";
 
 
 const SignUp = () => {
@@ -20,36 +17,18 @@ const SignUp = () => {
 
     const navigate = useNavigate();
     
-    const createUser = async (firstName, lastName, email, password) => {
-        
-        const newUserData = {
-            name:firstName,
-            lastName: lastName,
-            balance: 0,
-            transactions: [],
-            reminders: []
-        }
-        try {
-            const newUser = await createUserWithEmailAndPassword(auth, email, password);
-            const uid = newUser.user.uid
-            const collectionRef = collection(db,'users');
-            
-            await setDoc(doc(db, 'users', uid), newUserData);
-          
-            navigate('/');
-        } catch (error) {
-            alert("Failed to create user");
-            console.log(error);
-        }
-    }
+    
 
-    const handleSignUpForm = (data) => {
+    const handleSignUpForm = async (data) => {
         
         const {firstName, lastName, email, password, repeatPassword } = data;
         
-        if(signUpFormCheck(firstName, lastName, email, password, repeatPassword )){
-            createUser(firstName, lastName, email,password);
+
+        const result = await signUp(firstName, lastName, email, password, repeatPassword);
+        if(result){
+            navigate('/');
         }
+
         
     }
 

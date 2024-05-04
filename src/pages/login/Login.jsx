@@ -4,7 +4,6 @@ import logo from "../../assets/logo/logo.png";
 import { BoldedWord } from "../../components";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { login } from "../../firebase";
 
@@ -13,20 +12,18 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const loginHandler = async (email, password)  => {
-        await login(auth, email, password);
-        navigate('/home')
-    }
+  
 
-    const handleFormInput = (data) => {
+    const handleFormInput = async (data) => {
         const {email, password} = data;
-        
-        if(!email || !password){
-            alert('Error');
-            return;
+
+        if(email || password){
+            
+            const result = await login(auth, email, password);
+            if(result){
+                navigate('/home');
+            }
         }
-        loginHandler(email, password);
-        
     }
   
 

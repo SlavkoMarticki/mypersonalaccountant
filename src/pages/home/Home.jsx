@@ -4,10 +4,13 @@ import deleteButton from "../../assets/logo/deleteButton.png";
 import whiteArrow from "../../assets/logo/white-arrow.svg";
 import book from "../../assets/logo/book.png";
 import gearWheel from "../../assets/logo/gearwheel.png";
-import { BoldedWord } from "../../components";
-import { auth } from "../../firebase/firebase";
+import { 
+    BoldedWord, 
+    MonthsList,
+    CurrencyList
+} from "../../components";
 import { useNavigate } from "react-router-dom"
-import { signOut } from "firebase/auth";
+import { logOut } from "../../firebase/auth";
 import { 
     CreateTransaction, 
     CreateReminder,
@@ -15,6 +18,8 @@ import {
 } from "../../portals";
 import dateFormat from "../../utils/dateFormat";
 import {fetchTransactions, deleteTransaction} from "../../firebase/transactions";
+
+
 
 
 const Home = () => {
@@ -26,6 +31,8 @@ const Home = () => {
     const [isOpenCurrencyDropdown, setIsOpenCurrencyDropdown] = useState(false);
     const [exchangeRate, setExchangeRate] = useState(1);
     const [currencyLogo, setCurrencyLogo] = useState('RSD')
+    const [isOpenMonthList, setIsOpenMonthList] = useState(false);
+    const [selectedMonth, setSelectedMonth] = useState('Select Month');
 
     const [userData, setUserData] = useState({
         status: null,
@@ -35,25 +42,26 @@ const Home = () => {
    
 
     const navigate = useNavigate();
-    const logOut = async () =>{
-        try {
-            await signOut(auth);
-            localStorage.setItem('id','')
-            navigate('/');
-        } catch (error) {
-            alert("Log out error");
+
+
+    const logOutHandler = async() =>{
+        const result = await logOut();
+       
+        if(result){
+            navigate('/')
         }
-        
+         
     }
 
     useEffect(()=>{
         
 
         const getData = async () => {
-    
            try {
-             const result = await fetchTransactions();
-             setUserData(result);
+            const result = await fetchTransactions();
+            //filteredTransactions(result);
+            setUserData(result)
+             
            } catch (error) {
              console.error("Error fetching transactions:", error);
              alert("Error while fetching data");
@@ -62,8 +70,34 @@ const Home = () => {
         }
 
         getData();
-    },[render]);
-    console.log(userData);
+       // filteredTransactions();
+        
+    },[render, selectedMonth]);
+
+    const filteredTransactions = () => {
+
+        const monthMap = {
+            'January': 1, 'February': 2, 'March': 3, 'April': 4,
+            'May': 5, 'June': 6, 'July': 7, 'August': 8,
+            'September': 9, 'October': 10, 'November': 11, 'December': 12
+        };
+
+        const targetMonth = monthMap[selectedMonth]
+      
+        
+         if(selectedMonth !== 'Select Month'){
+            const result = userData.transactions.filter(transaction => {
+                const dateParts = transaction.date.split('.');
+                const month = parseInt(dateParts[1], 10);
+                return month === targetMonth;
+            });
+            return result || [];
+
+         }
+
+        return userData.transactions || [];     
+    }
+  
 
     const deleteTransactionHandler = async (id) => {
    
@@ -120,11 +154,26 @@ const Home = () => {
             </div>
             <div className="main-view">
                 <div className="sign-out-bar">
-                    <button className="sign-out-button" onClick={logOut} > Sign Out</button>
+                    <button className="sign-out-button" onClick={logOutHandler} > Sign Out</button>
                 </div>
                 <div className="date-balance-bar">
                     <div className="date-side">
-                        <p>Date: {dateFormat(new Date())} <button>May</button> </p>
+                        <p>Date: {dateFormat(new Date())} 
+                            <button 
+                                className="select-month-button"
+                                onClick={()=>setIsOpenMonthList(!isOpenMonthList)}
+                            >
+                                {selectedMonth}
+                            {
+                                isOpenMonthList ? 
+                                <MonthsList 
+                                    pickMonth={setSelectedMonth}
+                                    filter={filteredTransactions()}
+                                />  
+                                : <></>
+                            }
+                            </button> 
+                        </p>
                     </div>
                     <div className="balance-side">
                         <p>Balance: {<BoldedWord word={(userData.balance * exchangeRate).toFixed(2)}/> }
@@ -132,35 +181,14 @@ const Home = () => {
                             className="select-currency-button"
                             onClick={()=>setIsOpenCurrencyDropdown(!isOpenCurrencyDropdown)}>{currencyLogo}
                         </button></p>
+                        
                         {isOpenCurrencyDropdown ? 
-                            <div className="currency-dropdown-list">
-                                <button onClick={
-                                    () => {
-                                        setExchangeRate(1)
-                                        setIsOpenCurrencyDropdown(!isOpenCurrencyDropdown)
-                                        setCurrencyLogo('RSD');
-                                    }}
-                                >RSD</button>
-                                <button onClick={
-                                    () => {
-                                        setExchangeRate(0.0085)
-                                        setIsOpenCurrencyDropdown(!isOpenCurrencyDropdown)
-                                        setCurrencyLogo('EUR');
-                                    }}>EUR</button>
-                                <button onClick={
-                                    ()=>{
-                                        setExchangeRate(0.86)
-                                        setIsOpenCurrencyDropdown(!isOpenCurrencyDropdown)
-                                        setCurrencyLogo('RUB');
-                                    }
-                                }>RUB</button>
-                                <button onClick={
-                                    ()=>{
-                                        setExchangeRate(0.0091)
-                                        setIsOpenCurrencyDropdown(!isOpenCurrencyDropdown)
-                                        setCurrencyLogo('USD');
-                                    }}>USD</button>
-                            </div> : <></>
+                            <CurrencyList 
+                                pickExchangeRate={setExchangeRate}
+                                pickCurrencyLogo={setCurrencyLogo}
+                                closeList={setIsOpenCurrencyDropdown}
+                            />
+                             : <></>
                         }
                     </div>
                 </div>
@@ -178,7 +206,7 @@ const Home = () => {
                         </thead>
                         <tbody>
                             {
-                                userData.transactions?.map((user,num) => {
+                                filteredTransactions()?.map((user,num) => {
                                     return ( 
                                     <tr>
                                         <th>{num+1}.</th>
