@@ -7,5 +7,4 @@ export default function BoldedWord({word}) {
   if(word === 'Income') return (<b className='income'>{word} </b>);
   
   return <b>{word} </b>
-  
 }

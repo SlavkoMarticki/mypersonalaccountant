@@ -33,9 +33,13 @@ const CurrencyList = (data) => {
                     pickCurrencyLogo('USD');
                     closeList(false);
                 }}>USD</button>
+            <button onClick={
+                ()=>{
+                    pickExchangeRate(0.067)
+                    pickCurrencyLogo('CNY');
+                    closeList(false);
+                }}>CNY</button>
         </div>
     );
 }
-
 export default CurrencyList;
-

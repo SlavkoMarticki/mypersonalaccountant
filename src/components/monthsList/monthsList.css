@@ -3,7 +3,6 @@
     width: 140px;
     margin: auto;
     border: 1px solid rgb(112, 112, 112);
-
 }
 .months-dropdown-list button{
     width: 100%;
@@ -12,8 +11,6 @@
     cursor: pointer;
     color: black;
     border: none;
-
-
 }
 .months-dropdown-list button:hover{
     background-color: #0F5A64;

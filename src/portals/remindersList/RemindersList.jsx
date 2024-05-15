@@ -3,37 +3,35 @@ import "./remindersList.css";
 import deleteButton from "../../assets/logo/deleteButton.png"
 import {deleteReminder,fetchReminders} from "../../firebase/reminders";
 
-
-
 const RemindersList = (comand) => {
 
     const {openReminderList, closeReminderList} = comand;
     const [remindersList, setRemindersList] = useState([]);
-    const [render,setRender] = useState(false);
 
-    
+    const convertMiliseconds = (item) => {
+        const [day, month, year] = item.date.split('.')
+        const [minutes, hours] = item.time.split(':')
+        const dateObject = new Date(year, month - 1, day, hours, minutes);
+        
+        return dateObject.getTime();
+    }
 
     useEffect(() => {
         const getData = async () => {
-
             try {
                 const reminders = await fetchReminders();
+                
                 setRemindersList (reminders);  
             } catch (error) {
                 console.error("Error fetching reminders:", error);
             }
-
-          
         };
     
         getData();
     
       }, []); 
 
-      console.log(remindersList);
-
     const deleteReminderHandler = async (id) =>{
-
         try {
             await deleteReminder(id);
             const updatedReminders = await fetchReminders();
@@ -41,12 +39,10 @@ const RemindersList = (comand) => {
         } catch (error) {
             console.error("Error deleting reminder:", error);
         }
-
-
     }
     
-
     if(!openReminderList) return null;
+
     return (
         <div className="reminders-list-background">
             <div className="reminders-list-wrapper">
@@ -68,7 +64,24 @@ const RemindersList = (comand) => {
                         <tbody>
                             {
                                 remindersList?.map((reminder,num) => {
-                                   return ( <tr>
+                                   return (  (convertMiliseconds(reminder) > Date.now()) ? <tr>
+                                        <th className="reminder-number" >{num+1}.</th>
+                                        <th className="reminder-name">{reminder.name}</th>
+                                        <th className="date-reminder">{reminder.date}</th>
+                                        <th className="reminder-time">{reminder.time}</th>
+                                        <th >
+                                            <button
+                                                onClick={() => {deleteReminderHandler(reminder.reminderId)}}
+                                                className="reminder-delete-button"
+                                            > 
+                                            <img   
+                                                src={deleteButton} 
+                                                alt="Loading..."
+                                                className="reminder-delete-button-image" 
+                                                />   
+                                            </button>
+                                        </th>
+                                    </tr>:<tr className="finished-reminder">
                                         <th className="reminder-number" >{num+1}.</th>
                                         <th className="reminder-name">{reminder.name}</th>
                                         <th className="date-reminder">{reminder.date}</th>
@@ -83,14 +96,11 @@ const RemindersList = (comand) => {
                                                 alt="Loading..."
                                                 className="reminder-delete-button-image" 
                                                 /> 
-                                            
                                             </button>
-                                        
                                         </th>
                                     </tr>)
                                 })
                             }
-                          
                         </tbody>
                     </table>
                 </div>

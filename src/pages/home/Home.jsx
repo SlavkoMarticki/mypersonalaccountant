@@ -3,7 +3,6 @@ import "./home.css";
 import deleteButton from "../../assets/logo/deleteButton.png";
 import whiteArrow from "../../assets/logo/white-arrow.svg";
 import book from "../../assets/logo/book.png";
-import gearWheel from "../../assets/logo/gearwheel.png";
 import { 
     BoldedWord, 
     MonthsList,
@@ -14,13 +13,12 @@ import { logOut } from "../../firebase/auth";
 import { 
     CreateTransaction, 
     CreateReminder,
-    RemindersList
+    RemindersList,
+    Graph
 } from "../../portals";
 import dateFormat from "../../utils/dateFormat";
+import filteredTransactions from "../../utils/filteredTransactions";
 import {fetchTransactions, deleteTransaction} from "../../firebase/transactions";
-
-
-
 
 const Home = () => {
 
@@ -32,7 +30,8 @@ const Home = () => {
     const [exchangeRate, setExchangeRate] = useState(1);
     const [currencyLogo, setCurrencyLogo] = useState('RSD')
     const [isOpenMonthList, setIsOpenMonthList] = useState(false);
-    const [selectedMonth, setSelectedMonth] = useState('Select Month');
+    const [selectedMonth, setSelectedMonth] = useState('All Months');
+    const [isGraphOpen, setIsGraphOpen] = useState(false);
 
     const [userData, setUserData] = useState({
         status: null,
@@ -40,76 +39,44 @@ const Home = () => {
         transactions:[]
     });
    
-
     const navigate = useNavigate();
-
 
     const logOutHandler = async() =>{
         const result = await logOut();
        
         if(result){
             navigate('/')
-        }
-         
+        }     
     }
 
     useEffect(()=>{
         
-
         const getData = async () => {
            try {
             const result = await fetchTransactions();
-            //filteredTransactions(result);
+            
             setUserData(result)
              
            } catch (error) {
-             console.error("Error fetching transactions:", error);
              alert("Error while fetching data");
            }
          
         }
-
         getData();
-       // filteredTransactions();
         
     },[render, selectedMonth]);
 
-    const filteredTransactions = () => {
-
-        const monthMap = {
-            'January': 1, 'February': 2, 'March': 3, 'April': 4,
-            'May': 5, 'June': 6, 'July': 7, 'August': 8,
-            'September': 9, 'October': 10, 'November': 11, 'December': 12
-        };
-
-        const targetMonth = monthMap[selectedMonth]
-      
-        
-         if(selectedMonth !== 'Select Month'){
-            const result = userData.transactions.filter(transaction => {
-                const dateParts = transaction.date.split('.');
-                const month = parseInt(dateParts[1], 10);
-                return month === targetMonth;
-            });
-            return result || [];
-
-         }
-
-        return userData.transactions || [];     
-    }
-  
-
+   
     const deleteTransactionHandler = async (id) => {
    
         await deleteTransaction(id);
         setRender(!render);
     }
+    
 
     return(
-        <> 
-        
+        <>  
         <div className="home-page">
-            
             <div className="side-menu"> 
                 <div className="side-menu-title">
                     <h1>My Personal Accountant</h1>
@@ -120,11 +87,9 @@ const Home = () => {
                             src={whiteArrow} 
                             alt='Loading...'
                             className="button-image"
-                            
                         />
                         Add Transaction
                     </button>
-                 
                     <button className="option-button" onClick={()=>setIsOpenReminder(true)}>
                         <img 
                             src={whiteArrow} 
@@ -139,16 +104,9 @@ const Home = () => {
                             alt='Loading...'
                             className="button-image"
                         />
-                        My Reminders
+                        My Reminders 
                     </button>
-                    <button className="option-button" onClick={()=>setIsOpenReminderList(true)}>
-                        <img 
-                            src={gearWheel} 
-                            alt='Loading...'
-                            className="button-image"
-                        />
-                        Edit Profil
-                    </button>
+                    
                 </div>
 
             </div>
@@ -158,7 +116,7 @@ const Home = () => {
                 </div>
                 <div className="date-balance-bar">
                     <div className="date-side">
-                        <p>Date: {dateFormat(new Date())} 
+                        <p>Date: {<BoldedWord word={dateFormat( new Date())}/>} 
                             <button 
                                 className="select-month-button"
                                 onClick={()=>setIsOpenMonthList(!isOpenMonthList)}
@@ -168,20 +126,23 @@ const Home = () => {
                                 isOpenMonthList ? 
                                 <MonthsList 
                                     pickMonth={setSelectedMonth}
-                                    filter={filteredTransactions()}
+                                    filter={filteredTransactions(userData,selectedMonth)}
                                 />  
                                 : <></>
                             }
                             </button> 
-                        </p>
+                            <button 
+                                className="select-month-button" 
+                                onClick={()=>setIsGraphOpen(!isGraphOpen)}
+                            >Graph</button>
+                        </p>                    
                     </div>
                     <div className="balance-side">
                         <p>Balance: {<BoldedWord word={(userData.balance * exchangeRate).toFixed(2)}/> }
                         <button 
                             className="select-currency-button"
                             onClick={()=>setIsOpenCurrencyDropdown(!isOpenCurrencyDropdown)}>{currencyLogo}
-                        </button></p>
-                        
+                        </button></p>       
                         {isOpenCurrencyDropdown ? 
                             <CurrencyList 
                                 pickExchangeRate={setExchangeRate}
@@ -206,9 +167,9 @@ const Home = () => {
                         </thead>
                         <tbody>
                             {
-                                filteredTransactions()?.map((user,num) => {
+                                filteredTransactions(userData,selectedMonth)?.map((user,num) => {
                                     return ( 
-                                    <tr>
+                                    <tr>   
                                         <th>{num+1}.</th>
                                         <th> {user.date} </th>
                                         <th className="reason-tr">{user.reason}</th>
@@ -228,22 +189,21 @@ const Home = () => {
                 </div>
             </div>
        </div>
-       {isOpenReminderList ? <RemindersList openReminderList = {isOpenReminderList} closeReminderList = {()=>setIsOpenReminderList(false)} /> :<></>}
+       
+       {isOpenReminderList ? <RemindersList 
+            openReminderList = {isOpenReminderList} 
+            closeReminderList = {()=>setIsOpenReminderList(false)} 
+        /> : <></>}
        <CreateTransaction 
             openTransaction={isOpenTransaction} 
             closeTransaction={() => {
                 setRender(!render);
-                setIsOpenTransaction(false);
-                
-            }}
-        
-            
+                setIsOpenTransaction(false);             
+            }}    
         />
        <CreateReminder openReminder={isOpenReminder} closeReminder={()=>setIsOpenReminder(false)}/>
-       
-        </>
-       
+       {isGraphOpen ? <Graph openGraph={isGraphOpen} closeGraph={()=>setIsGraphOpen(!isGraphOpen)}/> : <></>}
+        </>    
     );
 }
 export default Home;
-

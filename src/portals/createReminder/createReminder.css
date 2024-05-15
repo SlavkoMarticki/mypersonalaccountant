@@ -49,7 +49,6 @@
     margin-bottom: 8px;
     font-weight: normal;
 }
-
 .reminder-date{
     margin-top: 45px;
     padding-left: 30px;
@@ -71,7 +70,6 @@
     margin-bottom: 8px;
     font-weight: normal;
 }
-
 .reminder-hours{
     margin-top: 45px;
     padding-left: 30px;
@@ -79,21 +77,11 @@
     flex-direction: column;
     align-items: flex-start;
 }
-/* .reminder-hours input{
-    font-size: 45px;
-    height: 60px;
-    width: 305px;
-    border: none;
-    background-color: #f4f4f4;
-    text-align: center;
-    border-radius: 10px;
-} */
 .reminder-hours label{
     font-size: 18px;
     margin-bottom: 8px;
     font-weight: normal;
 }
-
 .reminder-footer{
     background-color: #078798;
     height: 75px;

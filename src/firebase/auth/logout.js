@@ -5,7 +5,6 @@ const logOut = async () => {
 
     try {
         await signOut(auth);
-        //alert(auth.currentUser())
         localStorage.removeItem('id');
         return true;
     } catch (error) {

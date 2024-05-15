@@ -1,0 +1,78 @@
+.graph-background{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,70%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.graph-wrapper{
+    background-color: white;
+    width: 65%;
+    height: auto;
+    border-radius: 20px;
+}
+.graph-exit{
+    width: 100%;
+    height: 75px;
+    background-color: #078798;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end
+}
+.graph-exit button{
+    font-size: 25px;
+    color: white;
+    background-color: #078798;
+    border: none;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.graph-header{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    margin: 5px 0px 5px 0px;
+}
+.left-arrow{
+    width: 10%;
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+.right-arrow{
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    align-items: center;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+.graph-year{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    font-size: 30px;
+}
+.rotate{
+    transform: rotate(180deg);
+}
+.chart-holder{
+    width: 100%;
+    height: 80%;
+    margin: 0px;
+}

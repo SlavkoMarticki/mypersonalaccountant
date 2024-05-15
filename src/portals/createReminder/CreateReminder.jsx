@@ -57,9 +57,6 @@ const CreateReminder = (comand) => {
         } catch (error) {
             alert("Error " + error)
         }
-
-
-
         closeReminder();
     }
 
@@ -93,12 +90,10 @@ const CreateReminder = (comand) => {
                         />
                     </div>
                     <div className="reminder-hours">
-                        {/* TODO: Ovde treba da se promeni u TimePicker */}
                         <label htmlFor="hours">Set hours</label>
                         <TimePicker 
                             value={selectedTime}
                             onChange={(time) => setSelectedTime(time)}
-
                         />
                     </div>
                     <div className="reminder-footer">
@@ -113,12 +108,10 @@ const CreateReminder = (comand) => {
                                 onClick={closeReminder}
                             >Exit</button>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </form>
-        
+        </form>   
     );
 }
 

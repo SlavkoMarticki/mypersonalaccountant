@@ -4,7 +4,6 @@ import { onAuthStateChanged} from "firebase/auth";
 
 const fetchTransactions = async () => {
 
-
     return new Promise((resolve, reject) => {
       onAuthStateChanged(auth, async (user) => {
         if (user) {

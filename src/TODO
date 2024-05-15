@@ -1,4 +1,0 @@
-----1. Kreiraj zasebne fjalove za firebase funkcije da se sve izbaci iz komponenti
-----2. Popravi login, korinsik udje u home page iako nije pravilna sifra
-----3. Kreiranje dugmeta za selektovanje meseca, takodje i padajuceg menija za selektovanje meseca
-4. Izbaci transakcije samo za selektovani mesec

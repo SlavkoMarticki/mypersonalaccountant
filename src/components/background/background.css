@@ -1,8 +1,7 @@
 body{
     overflow: hidden;
 }
-.triangle{
-    
+.triangle{ 
     position: absolute;
     bottom: -200px;
     right: -90px;

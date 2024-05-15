@@ -23,7 +23,5 @@ const reminderTimeCalculator = (dateValues) => {
     const remainingDays = daysDifference % 365;
 
     return `Time difference: ${yearsDifference} years, ${remainingDays} days, ${remainingHours} hours, ${remainingMinutes} minutes, ${remainingSeconds} seconds`;
-
-
 }
 export default reminderTimeCalculator;

@@ -5,7 +5,7 @@ const MonthsList = ({pickMonth}) => {
 
     return (
         <div className="months-dropdown-list">
-            <button onClick={ ()=>{pickMonth('Select Month') }}>Select Month</button>
+            <button onClick={ ()=>{pickMonth('All Months') }}>All Months</button>
             <button onClick={ ()=>{pickMonth('January') }}>January</button>
             <button onClick={ ()=>{pickMonth('February') }}>February</button>
             <button onClick={ ()=>{pickMonth('March') }}>March</button>

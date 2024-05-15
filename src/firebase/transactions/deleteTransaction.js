@@ -6,6 +6,7 @@ const documentId = localStorage.getItem('id');
 
 const deleteTransaction = async (id) => {
 
+    
     try {
         const documentRef = doc(db, 'users', documentId);
         const docSnapshot = await getDoc(documentRef);
@@ -13,33 +14,38 @@ const deleteTransaction = async (id) => {
 
         if (docSnapshot.exists()) {
     
-            const selectAllTransactions = docSnapshot.data();
-            const selectedTransaction = selectAllTransactions.transactions.filter(transaction => transaction.transactionId === id);
-            const removeTransaction = selectAllTransactions.transactions.filter(transaction => transaction.transactionId !== id);
+            const dbData = docSnapshot.data();
+
+            const selectedTransaction = dbData.transactions.filter(transaction => transaction.transactionId === id);
+            const removeTransaction = dbData.transactions.filter(transaction => transaction.transactionId !== id);
              
+            const oldGraphData = dbData.graphData;
+            
 
             if(selectedTransaction[0].status === 'Income'){
                 newBalance = Number(docSnapshot.data().balance) - Number(selectedTransaction[0].amount)
             }else{
                 newBalance = Number(docSnapshot.data().balance) + Number(selectedTransaction[0].amount)
             }
-
+            let newGraphData = {
+                amount: newBalance,
+                date: selectedTransaction[0].date
+            }
+         
             await updateDoc(documentRef, {
                 transactions: removeTransaction,
-                balance: newBalance
-            });
+                balance: newBalance,
+                graphData: [...oldGraphData, newGraphData]
 
-            
-           
+            });
+     
         } else {
-            alert("Document does not exist!");
+            alert("Document do not exist!");
         }
 
     } catch (error) {
         alert("Error")
     }
-    
-
 }
 
 export default deleteTransaction

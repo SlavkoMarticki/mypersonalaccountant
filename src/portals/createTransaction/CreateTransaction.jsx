@@ -15,7 +15,6 @@ const CreateTransaction = (comand) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
 
  
-   
     const { 
         register, 
         handleSubmit,
@@ -25,10 +24,9 @@ const CreateTransaction = (comand) => {
     const addTransaction = async (data) => {
         const {transactionReason, status, amount} = data;
 
-      
         const newTransactionData = {
             date: dateFormat(selectedDate),
-            status: status,
+            status: status, 
             amount: Number(amount),
             reason: transactionReason,
             transactionId: uuidv4()
@@ -36,40 +34,45 @@ const CreateTransaction = (comand) => {
 
         const documentId = localStorage.getItem('id');
 
-
         try {
             
             const documentRef = doc(db, 'users', documentId);
             const docSnapshot = await getDoc(documentRef);
 
             if (docSnapshot.exists()) {
-              const existingTransactions = docSnapshot.data().transactions || [];
-              const existingBalanc = docSnapshot.data().balance;
-              let newBalanc = 0;
+                const dbData = docSnapshot.data()
+                const existingTransactions = dbData.transactions || [];
+                const existingBalanc = dbData.balance;
+                const existingGraphData = dbData.graphData || [];
+                let newBalanc = 0;
         
-              
-              const updatedTransactions = [...existingTransactions, newTransactionData];
-              if(status === "Income"){
-                newBalanc = Number(existingBalanc) + Number(amount);
-              }else{
-                newBalanc = Number(existingBalanc) - Number(amount);
-              }
+                const updatedTransactions = [...existingTransactions, newTransactionData];
+                if(status === "Income"){
+                  newBalanc = Number(existingBalanc) + Number(amount);
+                }else{
+                  newBalanc = Number(existingBalanc) - Number(amount);
+                }
 
-              await updateDoc(documentRef, {
-                transactions: updatedTransactions,
-                balance: Number(newBalanc)
-              });
+                const newGraphData = {
+                    date: dateFormat(selectedDate),
+                    amount: newBalanc
+                }
+                const updatedGraphData = [...existingGraphData, newGraphData];
+
+                await updateDoc(documentRef, {
+                  transactions: updatedTransactions,
+                  balance: Number(newBalanc),
+                  graphData: updatedGraphData
+                });
         
               
-              closeTransaction();
+                closeTransaction();
             } else {
               alert("Document does not exist!");
             }
           } catch (error) {
             alert("Error adding transaction: ", error);
-          }
-
-        
+          }   
     }
 
     if(!openTransaction) return null;
@@ -87,7 +90,6 @@ const CreateTransaction = (comand) => {
                             />
                         </div>
                     </div>
-
                     <div className="transaction-data-side">
                         <div className="transaction-title">
                             <h1>Add Transaction</h1>
@@ -118,7 +120,6 @@ const CreateTransaction = (comand) => {
                                     className="transaction-reason-textare"
                                     maxLength={40}
                                     {...register('transactionReason',{required:true})}
-
                                 ></textarea>
                             </div>
                             <div className="transaction-status">
@@ -148,9 +149,7 @@ const CreateTransaction = (comand) => {
                                             {...register('status',{required:true})}
                                         /> 
                                     </div>
-
                                 </div>
-
                             </div>
                             <div className="transaction-amount">
                                 <label 
@@ -169,8 +168,7 @@ const CreateTransaction = (comand) => {
                         <div className="button-holder">
                             <button 
                                 type="submit"
-                                className="save-button"
-                                
+                                className="save-button"  
                             >Save</button>
                             <button 
                                 type="button"
@@ -181,9 +179,7 @@ const CreateTransaction = (comand) => {
                     </div>
                 </div>
             </div>
-        </form>
-        
-        
+        </form> 
     );
 }
 

@@ -7,18 +7,14 @@ import { useNavigate } from "react-router-dom"
 import { auth } from "../../firebase/firebase";
 import { login } from "../../firebase";
 
-
 const Login = () => {
 
     const navigate = useNavigate();
-
-  
 
     const handleFormInput = async (data) => {
         const {email, password} = data;
 
         if(email || password){
-            
             const result = await login(auth, email, password);
             if(result){
                 navigate('/home');
@@ -26,7 +22,6 @@ const Login = () => {
         }
     }
   
-
     const { 
         register, 
         handleSubmit,
@@ -36,7 +31,6 @@ const Login = () => {
     return (
         <form onSubmit={handleSubmit(handleFormInput)} >
             <div className="loginPage">
-            
                 <div className="appNameArea">
                     <div className="nameSloganLogoHolder">
                         <h1 className="appName">MyPersonalAccountant</h1>
@@ -51,21 +45,13 @@ const Login = () => {
                     <div className="email-password-input">
                         <div className="email-holder">
                             <label htmlFor="email" className="email-label">E-mail</label>
-                            <input 
-                                type="email" 
-                                name="email" 
-                                className="email"
-                                {...register('email',{required:true})}
-                                
+                            <input type="email" name="email"className="email"
+                                {...register('email',{required:true})}      
                             />
                         </div>
                         <div className="password-holder">
                             <label htmlFor="password" className="password-label">Password</label>
-                            <input 
-                                type="password" 
-                                name="password"
-                                className="password"
-                             
+                            <input type="password" name="password" className="password" 
                                 {...register('password',{required:true})}
                             />
                         </div>
@@ -78,8 +64,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-        </form>
-        
+        </form>  
     );
 }
 export default Login;

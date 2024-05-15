@@ -1,3 +1,4 @@
+
 .home-page{
     position: absolute;
     top: 0px;
@@ -50,7 +51,6 @@
     background-color: #0b474f;
 
 }
-
 .side-menu-option-buttons{
     margin-top: 200px;
 }
@@ -101,7 +101,6 @@ table{
     text-align: left;
 }
 thead th{
-    /* position: sticky; */
     top: 0px;
     background-color: white;
     font-weight: bold;
@@ -140,7 +139,6 @@ th{
     padding: 7px;
     border-radius: 5px;
 }
-
 
 .select-month-button{
     color: white;

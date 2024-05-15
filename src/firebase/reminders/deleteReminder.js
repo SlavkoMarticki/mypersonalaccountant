@@ -20,8 +20,6 @@ const deleteReminder = async (id) =>{
     } catch (error) {
         alert("Error")
     }
-    
-
 }
 
 export default deleteReminder;

@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
 import {signUp} from "../../firebase/auth";
 
-
 const SignUp = () => {
 
     const { 
@@ -17,8 +16,6 @@ const SignUp = () => {
 
     const navigate = useNavigate();
     
-    
-
     const handleSignUpForm = async (data) => {
         
         const {firstName, lastName, email, password, repeatPassword } = data;

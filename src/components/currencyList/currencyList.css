@@ -12,7 +12,6 @@
     border: none;
     cursor: pointer;
 }
-
 .currency-dropdown-list button:hover{
     background-color: #0e4047;
     color: white;
